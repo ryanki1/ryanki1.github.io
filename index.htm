@@ -12,26 +12,28 @@
 <body ng-app="igWeather">
     <div id="pageContainer" ng-controller="landingCtrl">
         <h1>{{title}}</h1>
-        <select ng-model="city" ng-options="city.name for city in cities | orderBy:'main.temp':!tempDesc" ng-click="details(city)">
+        <select ng-model="city" ng-options="city.name for city in cities | orderBy:'main.temp':tempDesc">
             <option value="">
                 Please select a city
             </option>           
         </select>
         <label for="tempDescCheckbox">Sort Cities by Temperature, highest first</label>
-        <input id="tempDescCheckbox" type="checkbox" ng-model="tempDesc" ng-checked="true"/>
+        <input id="tempDescCheckbox" type="checkbox" ng-model="tempDesc" ng-init="tempDesc=true"/>
         <div class="details" ng-if="city">
-            <p>Temperature: {{selectedTemp}} °C</p>
-            <p>Range: {{tempMin}} °C to {{tempMax}} °C</p>
-            <p>Longitude: {{longitude}} °{{WE}}</p>
-            <p>Latitude: {{latitude}} °{{SN}}</p>
-            <img ng-src="{{icon}}" alt="Weather icon"/>
-            <p>Conditions: {{conditions}}</p>
-            <p>Atmospheric Pressure: {{pressure}} hPa</p>
-            <p>Humidity: {{humidity}} %</p>
+            <p>City: {{city.name}}</p>
+            <p>Temperature: {{kelvinToCelsius(city.main.temp)}}</span>°C</p>
+            <p>Range: {{kelvinToCelsius(city.main.temp_min)}} °C to {{kelvinToCelsius(city.main.temp_max)}} °C</p>
+            <p>Longitude: {{lonlat(city.coord.lon)}} °{{city.coord.lon < 0 ? "W" : "E"}}</p>
+            <p>Latitude: {{lonlat(city.coord.lat)}} °{{city.coord.lat < 0 ? "S" : "N"}}</p>
+            <img ng-src="{{'http://openweathermap.org/img/w/' + city.weather[0].icon + '.png'}}" alt="Weather icon"/>
+            <p>Conditions: {{city.weather[0].description}}</p>
+            <p>Atmospheric Pressure: {{city.main.pressure}} hPa</p>
+            <p>Humidity: {{city.main.humidity}} %</p>
         </div>
     </div>
     <!-- Third Party -->
     <script src="scripts/angular.js" type="text/javascript"></script>
+    <script src="scripts/angular-sanitize.js" type="text/javascript"></script>
     <!-- local app -->
     <script src="app/config/build.js" type="text/javascript"></script>
     <script src="app/app.js" type="text/javascript"></script>
