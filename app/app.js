@@ -1,7 +1,6 @@
 "use strict";
 
 angular.module("igWeather", [
-  "ngSanitize",	
   "landingModule",
   "sharedModule"
 ])
